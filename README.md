@@ -8,7 +8,7 @@ Various commands, important tutorials and settings for building and deploying se
 
 **Author:** Levindo Gabriel Taschetto Neto.
 
-## Install gitlab runner
+## Install Gitlab Runner
 https://about.gitlab.com/2016/04/19/how-to-set-up-gitlab-runner-on-digitalocean/
 
 ## Add SSH_PRIVATE_KEY
@@ -18,7 +18,7 @@ SSH_PRIVATE_KEY <- id_rsa in the ci settings variables
 $ cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
 ```
 
-## Subdomain redirect to an other ip/port
+## Subdomain Redirect to an Other IP/Port
 ### Install NGINX for reverse proxying
 
 ```
@@ -30,8 +30,9 @@ Copy (nginx-config/http2)[nginx-config/http2] into it.
 
 ```
 $ sudo service nginx restart
+```
 
-### Set up HTTPS
+### Set Up HTTPS
 
 ```
 $ sudo mkdir /etc/nginx/ssl
@@ -54,7 +55,7 @@ sudo apt-get update
 sudo apt-get install python-certbot-nginx 
 ```
 
-#### Create certificate for each app 
+#### Create a certificate for each app 
 
 Options may be found on (ssl)[ssl].
 ```
@@ -62,26 +63,25 @@ sudo certbot --nginx-server-root /etc/nginx
 ```
 
 
-### Add SSL certificate
+### Add SSL Certificate
 
-## Problems found on the way
+## Problems Found on the Way
 
-### Unzip not found
+### Unzip not Found
 ```
 $ apt-get install unzip
 ```
 
-### If INFO: 1 key(s) remain to be installed:
+### If INFO: 1 key(s) Remain(s) to be Installed:
 https://www.digitalocean.com/community/questions/ssh-copy-id-not-working-permission-denied-publickey
 
 ### Assign a Runner to Multiple Projects
 https://dzone.com/articles/changing-a-gitlab-runner-from-locked-to-a-project
 
-### Error to restart NGINX
+### Error to Restart NGINX
 
-It happened because the apache2 service was running, so:
+It happened because the apache2 service was also running, therefore:
 
 ```
 $ sudo /etc/init.d/apache2 stop
 ```
-
