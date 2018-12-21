@@ -1,0 +1,131 @@
+root@ubuntu16-2cpu-2gb:~# sudo certbot --nginx-server-root /etc/nginx
+
+
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Error while running nginx -c /etc/nginx/nginx.conf -t.
+
+How would you like to authenticate and install certificates?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: Apache Web Server plugin - Beta (apache)
+2: Nginx Web Server plugin (nginx) [Misconfigured]
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 1
+Plugins selected: Authenticator apache, Installer apache
+Enter email address (used for urgent renewal and security notices) (Enter 'c' to
+cancel): levindogtn@gmail.com
+Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Please read the Terms of Service at
+https://letsencrypt.org/documents/LE-SA-v1.2-November-15-2017.pdf. You must
+agree in order to register with the ACME server at
+https://acme-v02.api.letsencrypt.org/directory
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(A)gree/(C)ancel: A
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Would you be willing to share your email address with the Electronic Frontier
+Foundation, a founding partner of the Let's Encrypt project and the non-profit
+organization that develops Certbot? We'd like to send you email about our work
+encrypting the web, EFF news, campaigns, and ways to support digital freedom.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+(Y)es/(N)o: Y
+Starting new HTTPS connection (1): supporters.eff.org
+No names were found in your configuration files. Please enter in your domain
+name(s) (comma and/or space separated)  (Enter 'c' to cancel): mywebapp.com.br, www.mywebapp.com.br, subdomain1.mywebapp.com.br, subdomain2.mywebapp.com.br, api.mywebapp.com.br
+Obtaining a new certificate
+Performing the following challenges:
+http-01 challenge for api.mywebapp.com.br
+http-01 challenge for subdomain1.mywebapp.com.br
+http-01 challenge for subdomain2.mywebapp.com.br
+http-01 challenge for mywebapp.com.br
+http-01 challenge for www.mywebapp.com.br
+Enabled Apache rewrite module
+Waiting for verification...
+Cleaning up challenges
+Created an SSL vhost at /etc/apache2/sites-available/000-default-le-ssl.conf
+Enabled Apache socache_shmcb module
+Enabled Apache ssl module
+Deploying Certificate to VirtualHost /etc/apache2/sites-available/000-default-le-ssl.conf
+Enabling available site: /etc/apache2/sites-available/000-default-le-ssl.conf
+
+We were unable to find a vhost with a ServerName or Address of www.mywebapp.com.br.
+Which virtual host would you like to choose?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: 000-default.conf               |                       |       | Enabled
+2: 000-default-le-ssl.conf        | mywebapp.com.br        | HTTPS | Enabled
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Deploying Certificate to VirtualHost /etc/apache2/sites-available/000-default-le-ssl.conf
+
+We were unable to find a vhost with a ServerName or Address of subdomain1.mywebapp.com.br.
+Which virtual host would you like to choose?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: 000-default.conf               |                       |       | Enabled
+2: 000-default-le-ssl.conf        | Multiple Names        | HTTPS | Enabled
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Deploying Certificate to VirtualHost /etc/apache2/sites-available/000-default-le-ssl.conf
+
+We were unable to find a vhost with a ServerName or Address of subdomain2.mywebapp.com.br.
+Which virtual host would you like to choose?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: 000-default.conf               |                       |       | Enabled
+2: 000-default-le-ssl.conf        | Multiple Names        | HTTPS | Enabled
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Deploying Certificate to VirtualHost /etc/apache2/sites-available/000-default-le-ssl.conf
+
+We were unable to find a vhost with a ServerName or Address of api.mywebapp.com.br.
+Which virtual host would you like to choose?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: 000-default.conf               |                       |       | Enabled
+2: 000-default-le-ssl.conf        | Multiple Names        | HTTPS | Enabled
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Deploying Certificate to VirtualHost /etc/apache2/sites-available/000-default-le-ssl.conf
+
+Please choose whether or not to redirect HTTP traffic to HTTPS, removing HTTP access.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: No redirect - Make no further changes to the webserver configuration.
+2: Redirect - Make all requests redirect to secure HTTPS access. Choose this for
+new sites, or if you're confident your site works on HTTPS. You can undo this
+change by editing your web server's configuration.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+Enabled Apache rewrite module
+Redirecting vhost in /etc/apache2/sites-enabled/000-default.conf to ssl vhost in /etc/apache2/sites-available/000-default-le-ssl.conf
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Congratulations! You have successfully enabled https://mywebapp.com.br,
+https://www.mywebapp.com.br, https://subdomain1.mywebapp.com.br,
+https://subdomain2.mywebapp.com.br, and https://api.mywebapp.com.br
+
+You should test your configuration at:
+https://www.ssllabs.com/ssltest/analyze.html?d=mywebapp.com.br
+https://www.ssllabs.com/ssltest/analyze.html?d=www.mywebapp.com.br
+https://www.ssllabs.com/ssltest/analyze.html?d=subdomain1.mywebapp.com.br
+https://www.ssllabs.com/ssltest/analyze.html?d=subdomain2.mywebapp.com.br
+https://www.ssllabs.com/ssltest/analyze.html?d=api.mywebapp.com.br
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+IMPORTANT NOTES:
+ - Congratulations! Your certificate and chain have been saved at:
+   /etc/letsencrypt/live/mywebapp.com.br/fullchain.pem
+   Your key file has been saved at:
+   /etc/letsencrypt/live/mywebapp.com.br/privkey.pem
+   Your cert will expire on 2019-03-20. To obtain a new or tweaked
+   version of this certificate in the future, simply run certbot again
+   with the "certonly" option. To non-interactively renew *all* of
+   your certificates, run "certbot renew"
+ - Your account credentials have been saved in your Certbot
+   configuration directory at /etc/letsencrypt. You should make a
+   secure backup of this folder now. This configuration directory will
+   also contain certificates and private keys obtained by Certbot so
+   making regular backups of this folder is ideal.
+ - If you like Certbot, please consider supporting our work by:
+
+   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+   Donating to EFF:                    https://eff.org/donate-le
+
+
