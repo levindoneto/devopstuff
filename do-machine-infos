@@ -1,0 +1,10 @@
+gitlab-runner --version
+Version:      11.5.1
+Git revision: 7f00c780
+Git branch:   11-5-stable
+GO version:   go1.8.7
+Built:        2018-12-06T13:25:34+0000
+OS/Arch:      linux/amd64
+
+
+
