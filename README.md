@@ -28,6 +28,11 @@ $ sudo nano /etc/nginx/sites-available/default
 
 Copy (nginx-config/http2)[nginx-config/http2] into it.
 
+### Verify the config's syntax
+```
+$ nginx -t -c /etc/nginx/nginx.conf
+```
+
 ```
 $ sudo service nginx restart
 ```
