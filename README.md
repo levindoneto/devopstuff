@@ -23,7 +23,9 @@ sudo apt-get install gitlab-runner
 4. Expand the **Runners** menu.
 5. Click "Disable shared Runners".
 6. Pay attention to the following information:
+
 ![1](resources/runners-setup.png)
+
 ### On the Machine
 ```shell
 sudo gitlab-runner register
@@ -31,8 +33,8 @@ sudo gitlab-runner register
 * **gitlab-ci coordinator URL:** *2.* from the previos image.
 * **gitlab-ci token for this runner:** *3.* from the previos image.
 * **gitlab-ci description for this runner:** Anything.
-* **gitlab-ci tags for this runner:** Tasks from the *.gitlab-ci.yml*
-* **gitlab-ci coordinator URL:** docker
+* **gitlab-ci tags for this runner:** Tasks from the *.gitlab-ci.yml* file.
+* **gitlab-ci coordinator URL:** docker.
 * **gitlab-ci coordinator URL:** Any image, once this info is specified within the *.gitlab-ci.yml* file.
 
 If everything went smoothly, this message will show up:
@@ -44,18 +46,17 @@ And the runner should appear on the activated runners within the same page of co
 
 ![2](resources/runners-setup2.png)
 
-
 ## Add SSH_PRIVATE_KEY
 https://docs.gitlab.com/ee/ci/ssh_keys/
 SSH_PRIVATE_KEY <- id_rsa in the ci settings variables
-```
+```shell
 $ cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
 ```
 
 ## Subdomain Redirect to an Other IP/Port
 ### Install NGINX for reverse proxying
 
-```
+```shell
 $ sudo apt-get install nginx
 $ sudo nano /etc/nginx/sites-available/default
 ```
@@ -63,26 +64,31 @@ $ sudo nano /etc/nginx/sites-available/default
 Copy (nginx-config/http2)[nginx-config/http2] into it.
 
 ### Verify the config's syntax
-```
+```shell
 $ nginx -t -c /etc/nginx/nginx.conf
 ```
 
-```
+```shell
 $ sudo service nginx restart
+```
+
+### Check NGINX's log
+```shell
+cat /var/log/nginx/error.log
 ```
 
 ### Set Up HTTPS
 
-```
-$ sudo mkdir /etc/nginx/ssl
-$ sudo chown -R root:root /etc/nginx/ssl
-$ sudo chmod -R 600 /etc/nginx/ssl
+```shell
+sudo mkdir /etc/nginx/ssl
+sudo chown -R root:root /etc/nginx/ssl
+sudo chmod -R 600 /etc/nginx/ssl
 
-$ openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 ```
 
 ```
-$ sudo service nginx stop
+sudo service nginx stop
 ```
 
 #### Get Certbot
@@ -101,14 +107,13 @@ Options may be found on (ssl)[ssl].
 sudo certbot --nginx-server-root /etc/nginx
 ```
 
-
 ### Add SSL Certificate
 
 ## Problems Found on the Way
 
 ### Unzip not Found
 ```
-$ apt-get install unzip
+apt-get install unzip
 ```
 
 ### If INFO: 1 key(s) Remain(s) to be Installed:
@@ -122,5 +127,5 @@ https://dzone.com/articles/changing-a-gitlab-runner-from-locked-to-a-project
 It happened because the apache2 service was also running, therefore:
 
 ```
-$ sudo /etc/init.d/apache2 stop
+sudo /etc/init.d/apache2 stop
 ```
