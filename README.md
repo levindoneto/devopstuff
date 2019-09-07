@@ -68,9 +68,16 @@ Copy (nginx-config/http2)[nginx-config/http2] into it.
 nginx -t -c /etc/nginx/nginx.conf
 ```
 
+### To properly restart NGINX after changing the config file
 ```shell
-sudo service nginx restart
+service nginx reload
 ```
+
+Which results in a
+```log
+YEAR/MONTH/DAY HOUR:MINUTE:SECOND [notice] 69063#69063: signal process started
+```
+on `/var/log/nginx/error.log`.
 
 ### Check NGINX's log
 ```shell
