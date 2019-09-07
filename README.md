@@ -15,7 +15,7 @@ curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/sc
 sudo apt-get install gitlab-runner
 ```
 
-## Register the Runner (On Digital Ocean)
+## Register the Runner
 ### On GitLab
 1. Go to the Project.
 2. Settings.
@@ -50,26 +50,26 @@ And the runner should appear on the activated runners within the same page of co
 https://docs.gitlab.com/ee/ci/ssh_keys/
 SSH_PRIVATE_KEY <- id_rsa in the ci settings variables
 ```shell
-$ cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
+cat ~/.ssh/id_rsa.pub > ~/.ssh/authorized_keys
 ```
 
 ## Subdomain Redirect to an Other IP/Port
 ### Install NGINX for reverse proxying
 
 ```shell
-$ sudo apt-get install nginx
-$ sudo nano /etc/nginx/sites-available/default
+sudo apt-get install nginx
+sudo nano /etc/nginx/sites-available/default
 ```
 
 Copy (nginx-config/http2)[nginx-config/http2] into it.
 
 ### Verify the config's syntax
 ```shell
-$ nginx -t -c /etc/nginx/nginx.conf
+nginx -t -c /etc/nginx/nginx.conf
 ```
 
 ```shell
-$ sudo service nginx restart
+sudo service nginx restart
 ```
 
 ### Check NGINX's log
