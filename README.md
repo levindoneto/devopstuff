@@ -2,14 +2,48 @@
 
 Various commands, important tutorials and settings for building and deploying services in a continuous way.
 
-**Infrastructure Provider:** Digital Ocean.
+**Approached Infrastructure Providers:** Digital Ocean & Microsoft Azure.
 
 **CI:** GitLab CI.
 
 **Author:** Levindo Gabriel Taschetto Neto.
 
-## Install Gitlab Runner
-https://about.gitlab.com/2016/04/19/how-to-set-up-gitlab-runner-on-digitalocean/
+## Install GitLab Runner
+Used to take and run the jobs from GitLab.
+```shell
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | sudo bash
+sudo apt-get install gitlab-runner
+```
+
+## Register the Runner (On Digital Ocean)
+### On GitLab
+1. Go to the Project.
+2. Settings.
+3. CI/CD.
+4. Expand the **Runners** menu.
+5. Click "Disable shared Runners".
+6. Pay attention to the following information:
+![1](resources/runners-setup.png)
+### On the Machine
+```shell
+sudo gitlab-runner register
+```
+* **gitlab-ci coordinator URL:** *2.* from the previos image.
+* **gitlab-ci token for this runner:** *3.* from the previos image.
+* **gitlab-ci description for this runner:** Anything.
+* **gitlab-ci tags for this runner:** Tasks from the *.gitlab-ci.yml*
+* **gitlab-ci coordinator URL:** docker
+* **gitlab-ci coordinator URL:** Any image, once this info is specified within the *.gitlab-ci.yml* file.
+
+If everything went smoothly, this message will show up:
+```shell
+Runner registered successfully. Feel free to start it, but if it is running already the config should be automatically reloaded!
+```
+
+And the runner should appear on the activated runners within the same page of configuration.
+
+![2](resources/runners-setup2.png)
+
 
 ## Add SSH_PRIVATE_KEY
 https://docs.gitlab.com/ee/ci/ssh_keys/
@@ -57,10 +91,10 @@ sudo apt-get update
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
-sudo apt-get install python-certbot-nginx 
+sudo apt-get install python-certbot-nginx
 ```
 
-#### Create a certificate for each app 
+#### Create a certificate for each app
 
 Options may be found on (ssl)[ssl].
 ```
