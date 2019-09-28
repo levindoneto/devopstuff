@@ -109,7 +109,7 @@ sudo apt-get install python-certbot-nginx
 
 #### Create a certificate for each app
 
-Options may be found on (ssl)[ssl].
+Options may be found on [ssl](ssl).
 ```
 sudo certbot --nginx-server-root /etc/nginx
 ```
@@ -118,10 +118,6 @@ sudo certbot --nginx-server-root /etc/nginx
 
 ## Problems Found on the Way
 
-### Unzip not Found
-```
-apt-get install unzip
-```
 
 ### If INFO: 1 key(s) Remain(s) to be Installed:
 https://www.digitalocean.com/community/questions/ssh-copy-id-not-working-permission-denied-publickey
@@ -136,3 +132,8 @@ It happened because the apache2 service was also running, therefore:
 ```
 sudo /etc/init.d/apache2 stop
 ```
+
+### Set up a complete VM environment on Microsoft Azure
+
+TODO
+[azure/](azure/).
