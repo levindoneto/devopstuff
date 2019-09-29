@@ -91,12 +91,23 @@ sudo mkdir /etc/nginx/ssl
 sudo chown -R root:root /etc/nginx/ssl
 sudo chmod -R 600 /etc/nginx/ssl
 
-openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+sudo openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 ```
 
 ```
 sudo service nginx stop
 ```
+
+#### Open PORT 80
+
+The port 80 must be added to an inbound security rule, once it's accessed on the verification of Let's Encrypt.
+
+#### On Microsoft Azure
+1.  Go to **Networking**.
+2.  Click the button **Add inbound port rule**.
+3.  Fill up the information as the follow image.
+
+![inbound_sec_rule](resources/inbound_sec_rule.png)
 
 #### Get Certbot
 ```
@@ -104,7 +115,7 @@ sudo apt-get update
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
-sudo apt-get install python-certbot-nginx
+sudo apt-get install python-certbot-nginx -Y
 ```
 
 #### Create a certificate for each app
@@ -114,7 +125,7 @@ Options may be found on [ssl](ssl).
 sudo certbot --nginx-server-root /etc/nginx
 ```
 
-### Add SSL Certificate
+After the proccess is finished, the configuration will be able to be tested on [https://www.ssllabs.com/ssltest/analyze.html?d=<DOMAIN_HERE>&latest](https://www.ssllabs.com/ssltest/analyze.html?d=<DOMAIN_HERE>&latest).
 
 ## Problems Found on the Way
 
