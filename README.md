@@ -73,6 +73,15 @@ nginx -t -c /etc/nginx/nginx.conf
 service nginx reload
 ```
 
+#### If error
+```
+Jun 10 23:56:30 dawntech systemd[1]: Failed to start A high performance web server and a reverse proxy server.
+```
+Access: 
+https://stackoverflow.com/questions/51525710/nginx-failed-to-start-a-high-performance-web-server-and-a-reverse-proxy-server/51527784.
+
+Close everything on Port 80 and run `sudo service nginx restart`.
+
 Which results in a
 ```log
 YEAR/MONTH/DAY HOUR:MINUTE:SECOND [notice] 69063#69063: signal process started
@@ -115,7 +124,7 @@ sudo apt-get update
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
-sudo apt-get install python-certbot-nginx -Y
+sudo apt-get install python-certbot-nginx
 ```
 
 #### Create a certificate for each app
