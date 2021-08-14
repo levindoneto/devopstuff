@@ -47,3 +47,26 @@ sudo apt-get install python3-certbot-nginx
 # Get certificate to each domain
 sudo certbot --nginx-server-root /etc/nginx
 # Verify certificate on https://www.ssllabs.com/ssltest/analyze.html?d=dawntech.dev&latest
+
+# DOCKER
+sudo apt update -y
+sudo snap install docker
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# SETUP SIMPLE MONGO
+git clone https://github.com/dawntech/simplemongo
+cd simplemongo
+sudo docker-compose up --force-recreate mongodb
+
+# SETUP TELEPRESENCE
+curl -s https://packagecloud.io/install/repositories/datawireio/telepresence/script.deb.sh | sudo bash
+
+# Install NVM / Node
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+source ~/.bashrc
+nvm list-remote
+nvm install v14.17.5
+nvm use 14.17.5
+node -v
