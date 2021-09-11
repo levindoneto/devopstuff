@@ -70,3 +70,16 @@ nvm list-remote
 nvm install v14.17.5
 nvm use 14.17.5
 node -v
+
+# MongoSH
+wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
+sudo apt-get install gnupg
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-mongosh
+
+# MongoBI
+dpkg -l | grep -i openssl
+wget https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-ubuntu2004-v2.14.3.tgz
+sudo tar -xvzf mongodb-bi-linux-x86_64-ubuntu2004-v2.14.3.tgz 
+sudo install -m755 mongodb-bi-linux-x86_64-ubuntu2004-v2.14.3/bin/mongo* /usr/local/bin/
