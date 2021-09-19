@@ -157,3 +157,33 @@ sudo /etc/init.d/apache2 stop
 
 TODO
 [azure/](azure/).
+
+### How to add more subdomains with SSL
+Add a new entry to the file /etc/nginx/sites-available/default, such as the one below:
+```json
+server {
+    server_name donna-api.dawntech.dev;
+
+    location / {
+        proxy_pass http://localhost:5090;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/donna-api.dawntech.dev/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/donna-api.dawntech.dev/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+```
+
+```shell
+sudo service nginx stop
+sudo certbot --nginx # Follow the steps with the new subdomain and redirect
+sudo fuser -k 80/tcp
+sudo service nginx restart
+```
