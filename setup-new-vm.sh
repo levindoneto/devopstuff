@@ -57,9 +57,11 @@ server {
     }
 }
 """
-
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/ # link enable
 nginx -t
 service nginx reload
+
+sudo service nginx stop
 
 # SSL
 sudo mkdir /etc/nginx/ssl
@@ -74,8 +76,10 @@ sudo apt-add-repository -r ppa:certbot/certbot
 sudo apt-get install python3-certbot-nginx
 
 # Get certificate to each domain
-sudo certbot --nginx-server-root /etc/nginx
+sudo certbot --nginx
 # Verify certificate on https://www.ssllabs.com/ssltest/analyze.html?d=dawntech.dev&latest
+
+sudo service nginx restart
 
 # SETUP SIMPLE MONGO
 git clone https://github.com/dawntech/simplemongo
