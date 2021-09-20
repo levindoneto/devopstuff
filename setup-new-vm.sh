@@ -28,11 +28,13 @@ docker-compose build;docker-compose up;
 cd ..;
 
 # Reverse Proxy
+# sudo unlink /etc/nginx/sites-enabled/default # if needed for unlinking
 sudo apt-get install nginx -y
 sudo nano /etc/nginx/sites-available/default
 """
 server {
     server_name dawntech.dev;
+
     location / {
         proxy_pass http://localhost:3000;
         proxy_http_version 1.1;
@@ -40,8 +42,24 @@ server {
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
+    server_name bots.dawntech.dev;
+    location / {
+        proxy_pass http://localhost:5090;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
 }
 """
+
+nginx -t
+service nginx reload
 
 # SSL
 sudo mkdir /etc/nginx/ssl
