@@ -8,6 +8,12 @@ sudo apt install npm -y
 npm install --global yarn
 npm install pm2 -g
 
+# DOCKER
+sudo apt update -y
+sudo snap install docker
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
 # Site
 git clone https://github.com/DawntechInc/dawntech.dev
 cd dawntech.dev;
@@ -22,7 +28,7 @@ docker-compose build;docker-compose up;
 cd ..;
 
 # Reverse Proxy
-sudo apt-get install nginx
+sudo apt-get install nginx -y
 sudo nano /etc/nginx/sites-available/default
 """
 server {
@@ -52,12 +58,6 @@ sudo apt-get install python3-certbot-nginx
 # Get certificate to each domain
 sudo certbot --nginx-server-root /etc/nginx
 # Verify certificate on https://www.ssllabs.com/ssltest/analyze.html?d=dawntech.dev&latest
-
-# DOCKER
-sudo apt update -y
-sudo snap install docker
-sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
 
 # SETUP SIMPLE MONGO
 git clone https://github.com/dawntech/simplemongo
