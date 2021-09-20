@@ -11,12 +11,17 @@ npm install pm2 -g
 # Site
 git clone https://github.com/DawntechInc/dawntech.dev
 cd dawntech.dev;
-
 yarn
 pm2 start yarn --name dawntechsite -- start;
-
 cd ..;
 
+# Bots API
+git clone https://github.com/DawntechInc/donna-api.dev
+cd donna-api/api;
+docker-compose build;docker-compose up;
+cd ..;
+
+# Reverse Proxy
 sudo apt-get install nginx
 sudo nano /etc/nginx/sites-available/default
 """
