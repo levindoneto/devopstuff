@@ -22,10 +22,9 @@ pm2 start yarn --name dawntechsite -- start;
 cd ..;
 
 # Bots API
-git clone https://github.com/DawntechInc/donna-api.dev
+git clone https://github.com/dawntech/donna-api.git
 cd donna-api/api;
-docker-compose build;docker-compose up;
-cd ..;
+docker-compose build;docker-compose up -d;
 
 # Reverse Proxy
 # sudo unlink /etc/nginx/sites-enabled/default # if needed for unlinking
@@ -72,8 +71,11 @@ sudo openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 # Certbot
 sudo apt-get update
 sudo apt-get install software-properties-common
-sudo apt-add-repository -r ppa:certbot/certbot
-sudo apt-get install python3-certbot-nginx
+sudo apt-add-repository -r ppa:certbot/certbot # [ENTER]
+sudo apt-get install python3-certbot-nginx -y
+
+fuser -k 80/tcp
+service nginx start
 
 # Get certificate to each domain
 sudo certbot --nginx
