@@ -1,35 +1,60 @@
 git config --global user.name "Levindo Gabriel Taschetto Neto"
 git config --global user.email "levindogtn@gmail.com"
 
-sudo apt update
-sudo apt install nodejs -y
-sudo apt install npm -y
+sudo apt update;
+sudo apt install nodejs -y;
+sudo apt install npm -y;
 
-npm install --global yarn
-npm install pm2 -g
+npm install --global yarn;
+npm install pm2 -g;
 
 # DOCKER
-sudo apt update -y
-sudo snap install docker
-sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+sudo apt update -y;
+sudo snap install docker;
+sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose;
+sudo chmod +x /usr/local/bin/docker-compose;
 
-# Site
-git clone https://github.com/DawntechInc/dawntech.dev
+# Site [PORT=3000]
+git clone https://github.com/DawntechInc/dawntech.dev;
 cd dawntech.dev;
-yarn
+yarn;
 pm2 start yarn --name dawntechsite -- start;
 cd ..;
 
-# Bots API
-git clone https://github.com/dawntech/donna-api.git
+# ForeverLiss Bot API (POC) [PORT=3001]
+git clone https://github.com/DawntechInc/forever-liss-poc;
+cd forever-liss-poc;
+docker build . -f infra/Dockerfile;
+# Get IMAGE_ID
+docker run -d -p 3001:3001 <IMAGE_ID>
+cd ../;
+
+# Site (Beta for tests) [PORT=3002]
+mkdir beta;
+git clone https://github.com/DawntechInc/dawntech.dev;
+cd dawntech.dev;
+git checkout beta;
+yarn;
+pm2 start yarn --name dawntechbeta -- start;
+cd ../../;
+
+# Chatbots landing [PORT=3003]
+git clone https://github.com/DawntechInc/dawntech.dev;
+cd dawntech.dev;
+yarn;
+pm2 start yarn --name dawntechsite -- start;
+cd ../;
+
+# Bots API [PORT=5090]
+git clone https://github.com/dawntech/donna-api.git;
 cd donna-api/api;
 docker-compose build;docker-compose up -d;
+cd ../../;
 
 # Reverse Proxy
-# sudo unlink /etc/nginx/sites-enabled/default # if needed for unlinking
-sudo apt-get install nginx -y
-sudo nano /etc/nginx/sites-available/default
+# sudo unlink /etc/nginx/sites-enabled/default; # if needed for unlinking
+sudo apt-get install nginx -y;
+sudo nano /etc/nginx/sites-available/default;
 """
 server {
     server_name dawntech.dev;
@@ -72,6 +97,18 @@ server {
     server_name beta.dawntech.dev;
     location / {
         proxy_pass http://localhost:3002;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
+    server_name chatbots.dawntech.dev;
+    location / {
+        proxy_pass http://localhost:3003;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
