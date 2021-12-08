@@ -1,9 +1,19 @@
 git config --global user.name "Levindo Gabriel Taschetto Neto"
 git config --global user.email "levindogtn@gmail.com"
+git config --global credential.helper store
 
 sudo apt update;
-sudo apt install nodejs -y;
-sudo apt install npm -y;
+# sudo apt install nodejs -y;
+# sudo apt install npm -y;
+
+# Install NVM / Node
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+source ~/.bashrc
+# nvm list-remote
+nvm install v14.17.5
+nvm use 14.17.5
+node -v
 
 npm install --global yarn;
 npm install pm2 -g;
@@ -15,14 +25,14 @@ sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-c
 sudo chmod +x /usr/local/bin/docker-compose;
 
 # Site [PORT=3000]
-git clone https://github.com/DawntechInc/dawntech.dev;
 cd dawntech.dev;
-yarn;
-pm2 start yarn --name dawntechsite -- start;
+npm install;
+npm audit fix --force;
+pm2 start npm --name dawntechsite -- start;
 cd ..;
 
 # ForeverLiss Bot API (POC) [PORT=3001]
-git clone https://github.com/DawntechInc/forever-liss-poc;
+git clone https://github.com/dawntech/forever-liss-poc;
 cd forever-liss-poc;
 docker build . -f infra/Dockerfile;
 # Get IMAGE_ID
@@ -31,19 +41,13 @@ cd ../;
 
 # Site (Beta for tests) [PORT=3002]
 mkdir beta;
+cd beta;
 git clone https://github.com/DawntechInc/dawntech.dev;
 cd dawntech.dev;
 git checkout beta;
-yarn;
-pm2 start yarn --name dawntechbeta -- start;
+npm install;
+pm2 start npm --name dawntechbeta -- start;
 cd ../../;
-
-# Chatbots landing [PORT=3003]
-git clone https://github.com/DawntechInc/dawntech.dev;
-cd dawntech.dev;
-yarn;
-pm2 start yarn --name dawntechsite -- start;
-cd ../;
 
 # Bots API [PORT=5090]
 git clone https://github.com/dawntech/donna-api.git;
@@ -104,18 +108,6 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
-
-server {
-    server_name chatbots.dawntech.dev;
-    location / {
-        proxy_pass http://localhost:3003;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
 """
 # Run sudo certbot --nginx after each added entry in NGINX
 
@@ -133,7 +125,7 @@ sudo openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
 
 # Certbot
 sudo apt-get update
-sudo apt-get install software-properties-common
+sudo apt-get install software-properties-common # Y
 sudo apt-add-repository -r ppa:certbot/certbot # [ENTER]
 sudo apt-get install python3-certbot-nginx -y
 
@@ -146,6 +138,8 @@ sudo certbot --nginx
 
 sudo service nginx restart
 
+
+# EXTRAS ---------------------------------------------
 # SETUP SIMPLE MONGO
 git clone https://github.com/dawntech/simplemongo
 cd simplemongo
@@ -153,15 +147,6 @@ sudo docker-compose up --force-recreate mongodb
 
 # SETUP TELEPRESENCE
 curl -s https://packagecloud.io/install/repositories/datawireio/telepresence/script.deb.sh | sudo bash
-
-# Install NVM / Node
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-source ~/.bashrc
-nvm list-remote
-nvm install v14.17.5
-nvm use 14.17.5
-node -v
 
 # MongoSH
 wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
