@@ -49,6 +49,22 @@ npm install;
 pm2 start npm --name dawntechbeta -- start;
 cd ../../;
 
+# Client [PORT=3003]
+git clone https://github.com/dawntech/client.dawntech.dev;
+cd client.dawntech.dev;
+npm build;
+pm2 start npm --name dawntech_client -- start;
+cd ../;
+
+# API Client [PORT=3004]
+git clone https://github.com/dawntech/api.client.dawntech.dev;
+cd api.client.dawntech.dev;
+npm build;
+cd build;
+cp ../.env .
+pm2 start npm --name dawntech_apiclient -- start;
+cd ../../;
+
 # Bots API [PORT=5090]
 git clone https://github.com/dawntech/donna-api.git;
 cd donna-api/api;
@@ -98,9 +114,33 @@ server {
 }
 
 server {
+    server_name client.dawntech.dev;
+    location / {
+        proxy_pass http://localhost:3003;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
+    server_name api.client.dawntech.dev;
+    location / {
+        proxy_pass http://localhost:3004;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+server {
     server_name beta.dawntech.dev;
     location / {
-        proxy_pass http://localhost:3002;
+        proxy_pass http://localhost:3005;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
