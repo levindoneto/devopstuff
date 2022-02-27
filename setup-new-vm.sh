@@ -31,29 +31,20 @@ npm audit fix --force;
 pm2 start npm --name dawntechsite -- start;
 cd ..;
 
-# ForeverLiss Bot API (POC) [PORT=3001]
-git clone https://github.com/dawntech/forever-liss-poc;
-cd forever-liss-poc;
-docker build . -f infra/Dockerfile;
-# Get IMAGE_ID
-docker run -d -p 3001:3001 <IMAGE_ID>
-cd ../;
-
-# Site (Beta for tests) [PORT=3002]
-mkdir beta;
-cd beta;
-git clone https://github.com/DawntechInc/dawntech.dev;
-cd dawntech.dev;
-git checkout beta;
-npm install;
-pm2 start npm --name dawntechbeta -- start;
-cd ../../;
-
-# Client [PORT=3003]
+# Client [PORT=3001]
 git clone https://github.com/dawntech/client.dawntech.dev;
 cd client.dawntech.dev;
-npm build;
-pm2 start npm --name dawntech_client -- start;
+npm install;
+# npm build;
+pm2 start npm --name dawntech_client -- start -- --port 3001;
+cd ../;
+
+# Client [PORT=3001]
+git clone https://github.com/dawntech/admin.dawntech.dev;
+cd admin.dawntech.dev;
+npm install;
+# npm build;
+pm2 start npm --name dawntech_client -- start -- --port 3002;
 cd ../;
 
 # API Client [PORT=3333]
@@ -104,7 +95,7 @@ server {
 }
 
 server {
-    server_name foreverliss.dawntech.dev;
+    server_name client.dawntech.dev;
     location / {
         proxy_pass http://localhost:3001;
         proxy_http_version 1.1;
@@ -116,9 +107,9 @@ server {
 }
 
 server {
-    server_name client.dawntech.dev;
+    server_name admin.dawntech.dev;
     location / {
-        proxy_pass http://localhost:3003;
+        proxy_pass http://localhost:3002;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -139,17 +130,6 @@ server {
     }
 }
 
-server {
-    server_name beta.dawntech.dev;
-    location / {
-        proxy_pass http://localhost:3005;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
 """
 # Run sudo certbot --nginx after each added entry in NGINX
 
