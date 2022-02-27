@@ -56,7 +56,7 @@ npm build;
 pm2 start npm --name dawntech_client -- start;
 cd ../;
 
-# API Client [PORT=3004]
+# API Client [PORT=3333]
 git clone https://github.com/dawntech/api.client.dawntech.dev;
 cd api.client.dawntech.dev;
 npm install;
@@ -130,7 +130,7 @@ server {
 server {
     server_name api.client.dawntech.dev;
     location / {
-        proxy_pass http://localhost:3004;
+        proxy_pass http://localhost:3333;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
