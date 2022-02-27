@@ -59,7 +59,9 @@ cd ../;
 # API Client [PORT=3004]
 git clone https://github.com/dawntech/api.client.dawntech.dev;
 cd api.client.dawntech.dev;
-npm build;
+npm install;
+node ace build --production --ignore-ts-errors;
+cp .env.example .env
 cd build;
 cp ../.env .
 pm2 start npm --name dawntech_apiclient -- start;
