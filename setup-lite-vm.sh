@@ -24,35 +24,32 @@ sudo snap install docker;
 sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose;
 sudo chmod +x /usr/local/bin/docker-compose;
 
-# Site [PORT=3000]
-# Firebase
-
-# Client [PORT=3003]
-# Firebase
-
-# API Client [PORT=3004]
-# Digital Ocean App (TO DO)
+# API Client [PORT=3333]
 git clone https://github.com/dawntech/api.client.dawntech.dev;
 cd api.client.dawntech.dev;
-npm build;
+npm install;
+node ace build --production --ignore-ts-errors;
+cp .env.example .env
 cd build;
 cp ../.env .
 pm2 start npm --name dawntech_apiclient -- start;
 cd ../../;
 
 # Bots API [PORT=5090]
-# Digital Ocean App (TO DO)
+git clone https://github.com/dawntech/donna-api.git;
+cd donna-api/api;
+docker-compose build;docker-compose up -d;
+cd ../../;
 
 # Reverse Proxy
 # sudo unlink /etc/nginx/sites-enabled/default; # if needed for unlinking
 sudo apt-get install nginx -y;
 sudo nano /etc/nginx/sites-available/default;
 """
-
 server {
-    server_name api.client.dawntech.dev;
+    server_name bots.dawntech.dev;
     location / {
-        proxy_pass http://localhost:3004;
+        proxy_pass http://localhost:5090;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -61,6 +58,17 @@ server {
     }
 }
 
+server {
+    server_name api.client.dawntech.dev;
+    location / {
+        proxy_pass http://localhost:3333;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
 """
 # Run sudo certbot --nginx after each added entry in NGINX
 
@@ -90,25 +98,3 @@ sudo certbot --nginx
 # Verify certificate on https://www.ssllabs.com/ssltest/analyze.html?d=dawntech.dev&latest
 
 sudo service nginx restart
-
-# EXTRAS ---------------------------------------------
-# SETUP SIMPLE MONGO
-git clone https://github.com/dawntech/simplemongo
-cd simplemongo
-sudo docker-compose up --force-recreate mongodb
-
-# SETUP TELEPRESENCE
-curl -s https://packagecloud.io/install/repositories/datawireio/telepresence/script.deb.sh | sudo bash
-
-# MongoSH
-wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc | sudo apt-key add -
-sudo apt-get install gnupg
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
-sudo apt-get update
-sudo apt-get install -y mongodb-mongosh
-
-# MongoBI
-dpkg -l | grep -i openssl
-wget https://info-mongodb-com.s3.amazonaws.com/mongodb-bi/v2/mongodb-bi-linux-x86_64-ubuntu2004-v2.14.3.tgz
-sudo tar -xvzf mongodb-bi-linux-x86_64-ubuntu2004-v2.14.3.tgz 
-sudo install -m755 mongodb-bi-linux-x86_64-ubuntu2004-v2.14.3/bin/mongo* /usr/local/bin/
